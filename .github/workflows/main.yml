@@ -1,11 +1,11 @@
 name: Build My Dist
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch: # 允许手动点击开始编译
 
 jobs:
   build:
-    runs-on: ubuntu-20.04 # 换成老款 Ubuntu 系统，防止新系统不兼容
+    runs-on: ubuntu-latest # 使用最新系统镜像，分机器速度最快
 
     steps:
       - name: 检查代码
@@ -14,16 +14,18 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 14 # 换回 Vue 老项目最爱的 Node 14
+          node-version: 14 # 锁定 Node 14 兼容老旧 Vue 项目
 
       - name: 安装依赖
+        # --legacy-peer-deps 防止插件版本冲突导致安装失败
         run: npm install --legacy-peer-deps
 
       - name: 执行编译
+        # 针对老项目可能需要的 OpenSSL 兼容性处理已经移除，Node 14 默认支持老算法
         run: npm run build
 
       - name: 上传编译产物
         uses: actions/upload-artifact@v4
         with:
           name: EZ-THEME-DIST
-          path: dist/
+          path: dist/ # 编译生成的静态文件夹
