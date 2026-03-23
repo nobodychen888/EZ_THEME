@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # 使用最新系统
+    runs-on: ubuntu-latest
 
     steps:
       - name: 检查代码
@@ -14,17 +14,19 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16 # 16 版本相对均衡
+          node-version: 20   # 升级 Node 版本
+
+      - name: 查看系统资源
+        run: free -h
 
       - name: 强制安装依赖
-        run: |
-          npm install --legacy-peer-deps --no-audit --no-fund # 减少不必要的检查以节省内存
+        run: npm ci --legacy-peer-deps --no-audit --no-fund
 
       - name: 执行编译
-        # 这里是关键：限制 Node 内存为 4GB，并开启旧版加密兼容
         run: npm run build
         env:
-          NODE_OPTIONS: "--max-old-space-size=4096 --openssl-legacy-provider"
+          NODE_OPTIONS: "--max-old-space-size=6144 --openssl-legacy-provider"
+          GENERATE_SOURCEMAP: false   # 可选：关闭 source map
 
       - name: 上传编译产物
         uses: actions/upload-artifact@v4
