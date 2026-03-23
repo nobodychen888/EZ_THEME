@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04 # 换成老款 Ubuntu 系统，防止新系统不兼容
 
     steps:
       - name: 检查代码
@@ -14,12 +14,13 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 14 # 换回 Vue 老项目最爱的 Node 14
 
-      - name: 安装依赖并编译
-        run: |
-          npm install --legacy-peer-deps
-          npm run build
+      - name: 安装依赖
+        run: npm install --legacy-peer-deps
+
+      - name: 执行编译
+        run: npm run build
 
       - name: 上传编译产物
         uses: actions/upload-artifact@v4
