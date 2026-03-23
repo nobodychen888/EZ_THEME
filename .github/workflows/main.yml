@@ -1,0 +1,28 @@
+name: Build My Dist
+
+on:
+  workflow_dispatch: # 允许你手动点击开始编译
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检查代码
+        uses: actions/checkout@v3
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 安装依赖并编译
+        run: |
+          npm install
+          npm run build
+
+      - name: 上传编译产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: EZ-THEME-DIST # 这是下载包的名字
+          path: dist/ # 编译出来的文件夹路径
