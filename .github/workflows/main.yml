@@ -14,19 +14,21 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20   # 升级 Node 版本
+          node-version: 20   # 升级到 Node 20，内存管理更优
 
-      - name: 查看系统资源
+      - name: 查看系统资源（调试用）
         run: free -h
 
-      - name: 强制安装依赖
-        run: npm ci --legacy-peer-deps --no-audit --no-fund
+      - name: 安装依赖
+        run: npm install --legacy-peer-deps --no-audit --no-fund
 
       - name: 执行编译
         run: npm run build
         env:
+          # 分配更多内存给 Node（6GB，runner 总内存约 7GB）
           NODE_OPTIONS: "--max-old-space-size=6144 --openssl-legacy-provider"
-          GENERATE_SOURCEMAP: false   # 可选：关闭 source map
+          # 可选：关闭 source map 生成，节省内存
+          GENERATE_SOURCEMAP: false
 
       - name: 上传编译产物
         uses: actions/upload-artifact@v4
