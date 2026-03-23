@@ -14,14 +14,12 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16 # 降级到更稳的 16
+          node-version: 16
 
       - name: 安装依赖并编译
         run: |
           npm install --legacy-peer-deps
           npm run build
-        env:
-          NODE_OPTIONS: --openssl-legacy-provider # 解决 Node 高版本对旧项目的加密报错
 
       - name: 上传编译产物
         uses: actions/upload-artifact@v4
