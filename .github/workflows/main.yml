@@ -9,10 +9,10 @@ jobs:
 
     steps:
       - name: 检查代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # 已升级到 v4
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4  # 已升级到 v4
         with:
           node-version: 18
 
@@ -22,7 +22,7 @@ jobs:
           npm run build
 
       - name: 上传编译产物
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # 已升级到 v4
         with:
-          name: EZ-THEME-DIST # 这是下载包的名字
-          path: dist/ # 编译出来的文件夹路径
+          name: EZ-THEME-DIST
+          path: dist/
